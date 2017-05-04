@@ -1,0 +1,72 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI Sortable - Default functionality</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <style>
+        #sortable1,#sortable2 { display: inline-block;margin-top:100px;list-style-type: none; padding: 0; width: 30%;border:1px solid #ccc; height: 300px;overflow: scroll;}
+        #sortable1 li,#sortable2 li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+        #sortable1 li span,#sortable2 li span  { position: absolute; margin-left: -1.3em; }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            $( "#sortable1" ).sortable();
+            $( "#sortable1" ).disableSelection();
+            $( "#sortable2" ).sortable();
+            $( "#sortable2" ).disableSelection();
+            var arrText = [];
+            $('.ui-state-default').on('mousedown',function(){
+                var text = $(this).text();
+                var drag_is = true;
+                $(this).mousemove(function(){
+                    if($(this).position().left>parseInt($('#sortable1').css('width'))
+                        &&$(this).position().top>0
+                        &&$(this).position().top<parseInt($('#sortable2').css('height'))
+                        &&drag_is && text != ''
+                        && !contains(arrText,text)
+                    ){
+                        arrText.push(text);
+                        $('#sortable2').append('<li class="ui-state-default"><span draggable="false" class=" ui-icon-arrowthick-2-n-s"></span>'+text+'</li>');
+                        drag_is = false;
+                        text = '';
+                    }
+                })
+                $(document).on('mouseup',function(){
+                    text = '';
+                })
+            });
+            //判断数组arr中是否包含对象obj
+            function contains(arr, obj) {
+                var i = arr.length;
+                while (i--) {
+                    if (arr[i] === obj) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        } );
+    </script>
+</head>
+<body>
+
+<ul id="sortable1">
+    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 1</li>
+    <li class="ui-state-default"><span class="ui-icon "></span>Item 2</li>
+    <li class="ui-state-default"><span class=" ui-icon-arrowthick-2-n-s"></span>Item 3</li>
+    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 4</li>
+    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 5</li>
+    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 6</li>
+    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 7</li>
+</ul>
+<ul id="sortable2">
+
+</ul>
+
+
+</body>
+</html>

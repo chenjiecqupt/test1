@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{
+            width: 100%;
+        }
+        .img {
+            width: 60%;
+            margin: 50px 20%;
+            text-align:center;
+            background:#fff;
+            /*IE滤镜旋转*/
+            /*filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);​*/
+        }
+    </style>
+</head>
+<body>
+<div>
+    <button class="btn1">左转</button>
+    <button class="btn2">右转</button>
+</div>
+<div class="img">
+    <img src="img/qianwuyingluo1.jpg" alt="">
+</div>
+<script src="js/jquery-1.12.4.min.js"></script>
+<script>
+    $(function(){
+        (function(){
+            var cj=0;
+            $('.btn1').click(function(){
+                cj++;
+                cj_rotate($('.img'),cj)
+            });
+            $('.btn2').click(function(){
+                cj--;
+                cj_rotate($('.img'),cj)
+            });
+            function cj_rotate(obj,number){
+                number = number%4;
+                if(number<0)number+=4;
+                console.log(number);
+                obj.css('filter','progid:DXImageTransform.Microsoft.BasicImage(rotation='+number+')');
+            }
+        })()
+    })
+</script>
+</body>
+</html>

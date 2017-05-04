@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+   .img{
+        /*transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        -webkit-transform: rotate(90deg);
+        -o-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);*/
+        filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=0);
+        /*filter:progid:DXImagetransform.Microsoft.Matrix(
+                M11=0.707,M12=-0.707,
+                M21=0.707,M22=0.707,
+                SizingMethod='auto expand'
+        );*/
+    }
+    .div1{
+        margin:100px  20%;
+        /*filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);*/
+    }
+</style>
+<body>
+    <div id="picture">
+        <div class="">
+            <button class="btn1">左转</button>
+            <button class="btn2">右转</button>
+            <button class="btn3">翻转</button>
+        </div>
+        <div class="div1">
+            <img class="img" src="img/qianwuyingluo1.jpg" alt="千舞樱洛" title="千舞樱洛">
+            <!--<img id="show_img" src="img/qianwuyingluo1.jpg" alt="千舞樱洛" title="千舞樱洛">-->
+        </div>
+    </div>
+</body>
+<script src="js/jquery-1.12.4.min.js"></script>
+<script src="js/pictureRotate.js"></script>
+<script src="js/pictureRotateIe.js"></script>
+<script>
+    $(function(){
+        var browser=navigator.appName
+        var b_version=navigator.appVersion
+        var version=b_version.split(";");
+        var trim_Version=version[1].replace(/[ ]/g,"");
+        if(browser=="Microsoft Internet Explorer" && (trim_Version=="MSIE6.0" || trim_Version=="MSIE7.0" ||trim_Version=="MSIE8.0" || trim_Version=="MSIE9.0")){
+            $.picture_rotate_ie();
+        }else{
+            $.picture_rotate();
+        };
+    });
+</script>
+</html>

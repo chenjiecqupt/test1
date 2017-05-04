@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>任职聘任信息新增</title>
+    <script type="text/javascript" src="hrinfo/ver/unit/jg/verjgpbpositioning/VerJgPbPositionOperate.js"></script>
+    <script type="text/javascript" src="js/comm/customJs.js"></script>
+    <script>
+        $(document).ready(function(){
+            dutyRecordTypeChange();
+            initDutyUnitName();
+        })
+    </script>
+<body>
+
+    <div id="showmodal" class="modal-content" style="left: 23px; top: 120px;">
+        <form name="verJgPbPersonInfoForm" id="formJgPersonUpdate" method="post" action="/gpos-qzhrssb/updateVerJgPersonInfo.do?method=updateVerJgPersonInfo" class="form-inline" enctype="multipart/form-data" onsubmit="return false" novalidate="novalidate">
+            <div class="modal-header">
+                <button type="button" class="close close-popdown" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">基础信息&gt;修改</h4>
+            </div>
+
+            <div class="modal-body" style="max-height: 631px;">
+
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="保　存">
+                <button type="button" class="btn btn-default close-login close-popdown" data-dismiss="modal">取　消</button>
+            </div>
+            <div style="clear: both"></div>
+        </form>
+    </div>
+
+</div></div>
+</body>
+</html>

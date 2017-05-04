@@ -1,0 +1,268 @@
+<!Doctype html>
+<html xmlns=http://www.w3.org/1999/xhtml>
+<head>
+    <meta http-equiv=Content-Type content="text/html;charset=utf-8">
+    <title>工具栏</title>
+
+    <!-- 如果本文件的包与src不是在同一个目录,就要将basepath设置到src目录下 -->
+    <script type="text/javascript">
+        mxBasePath = '';
+    </script>
+
+    <!-- 引入支持库文件 -->
+    <script type="text/javascript" src="js/mxClient.js"></script>
+    <script type="text/javascript">
+        /*
+         定义一个树节点
+         */
+        function TreeNodeShape() { };
+
+        TreeNodeShape.prototype = new mxCylinder();
+        TreeNodeShape.prototype.constructor = TreeNodeShape;
+
+        // 定义的上边缘部分的长度。
+        TreeNodeShape.prototype.segment = 20;
+
+        // 根据状态显示元素
+        TreeNodeShape.prototype.apply = function(state)
+        {
+            mxCylinder.prototype.apply.apply(this, arguments);
+            this.state = state;
+        };
+
+        TreeNodeShape.prototype.redrawPath = fun
+        ction(path, x, y, w, h, isForeground)
+        {
+            var graph = this.state.view.graph;
+            var hasChildren = graph.model.getOutgoingEdges(this.state.cell).length > 0;
+
+            if (isForeground)
+            {
+                if (hasChildren)
+                {
+                    // 这里使用的是元素范围外边距
+                    path.moveTo(w / 2, h + this.segment);
+                    path.lineTo(w / 2, h);
+                    path.end();
+                }
+            }
+            else
+            {
+                path.moveTo(0, 0);
+                path.lineTo(w, 0);
+                path.lineTo(w, h);
+                path.lineTo(0, h);
+                path.close();
+            }
+        };
+
+        mxCellRenderer.prototype.defaultShapes['treenode'] = TreeNodeShape;
+
+        // 自定义元素边框
+        mxGraphView.prototype.updateFloatingTerminalPoint = function(edge, start, end, source)
+        {
+            var pt = null;
+
+            if (source)
+            {
+                pt = new mxPoint(start.x + start.width / 2,
+                    start.y + start.height + TreeNodeShape.prototype.segment);
+            }
+            else
+            {
+                pt = new mxPoint(start.x + start.width / 2, start.y);
+            }
+
+            edge.setAbsoluteTerminalPoint(pt, source);
+        };
+    </script>
+
+    <!-- 实例代码 -->
+    <script type="text/javascript">
+        // 程序在此方法中启动
+        function main()
+        {
+            // 检查浏览器支持
+            if (!mxClient.isBrowserSupported())
+            {
+                mxUtils.error('Browser is not supported!', 200, false);
+            }
+            else
+            {
+                // 定义新图标
+                mxGraph.prototype.collapsedImage = new mxImage(mxClient.imageBasePath + '/collapsed.gif', 9, 9);
+                mxGraph.prototype.expandedImage = new mxImage(mxClient.imageBasePath + '/expanded.gif', 9, 9);
+
+                // 解决IE浏览器的兼容样式
+                var container = document.createElement('div');
+                container.style.position = 'absolute';
+                container.style.overflow = 'hidden';
+                container.style.left = '0px';
+                container.style.top = '0px';
+                container.style.right = '0px';
+                container.style.bottom = '0px';
+
+                if (mxClient.IS_IE)
+                {
+                    new mxDivResizer(container);
+                }
+
+                document.body.appendChild(container);
+
+                // 在容器中创建图形
+                var graph = new mxGraph(container);
+
+                // 修改默认样式
+                var style = graph.getStylesheet().getDefaultVertexStyle();
+                style[mxConstants.STYLE_SHAPE] = 'treenode';
+                style[mxConstants.STYLE_GRADIENTCOLOR] = 'white';
+                style[mxConstants.STYLE_SHADOW] = true;
+
+                style = graph.getStylesheet().getDefaultEdgeStyle();
+                style[mxConstants.STYLE_EDGE] = mxEdgeStyle.TopToBottom;
+                style[mxConstants.STYLE_ROUNDED] = true;
+
+                // 设置自动调整大小
+                graph.setAutoSizeCells(true);
+                graph.setPanning(true);
+                graph.panningHandler.useLeftButtonForPanning = true;
+
+                // 按下回车或者Tab 键停止编辑
+                var keyHandler = new mxKeyHandler(graph);
+
+                // 在树布局中添加子元素的更新、添加、删除监听程序
+                var layout = new mxCompactTreeLayout(graph, false);
+                layout.useBoundingBox = false;
+                layout.edgeRouting = false;
+                layout.levelDistance = 30;
+                layout.nodeDistance = 10;
+
+                var layoutMgr = new mxLayoutManager(graph);
+
+                layoutMgr.getLayout = function(cell)
+                {
+                    if (cell.getChildCount() > 0)
+                    {
+                        return layout;
+                    }
+                };
+
+                // 禁用如何菜单操作
+                graph.setCellsSelectable(false);
+
+                // 定义折叠功能
+                graph.isCellFoldable = function(cell)
+                {
+                    return this.model.getOutgoingEdges(cell).length > 0;
+                };
+
+                // 定义折叠图标位置
+                graph.cellRenderer.getControlBounds = function(state)
+                {
+                    if (state.control != null)
+                    {
+                        var oldScale = state.control.scale;
+                        var w = state.control.bounds.width / oldScale;
+                        var h = state.control.bounds.height / oldScale;
+                        var s = state.view.scale;
+
+                        return new mxRectangle(state.x + state.width / 2 - w / 2 * s,
+                            state.y + state.height + TreeNodeShape.prototype.segment * s - h / 2 * s,
+                            w * s, h * s);
+                    }
+
+                    return null;
+                };
+
+                // 覆写折叠函数
+                graph.foldCells = function(collapse, recurse, cells)
+                {
+                    this.model.beginUpdate();
+                    try
+                    {
+                        toggleSubtree(this, cells[0], !collapse);
+                        this.model.setCollapsed(cells[0], collapse);
+
+                        // 执行折叠操作
+                        layout.execute(graph.getDefaultParent());
+                    }
+                    finally
+                    {
+                        this.model.endUpdate();
+                    }
+                };
+
+                // 创建默认窗体
+                var parent = graph.getDefaultParent();
+
+                // 添加更新事务
+                graph.getModel().beginUpdate();
+                try
+                {
+                    var w = graph.container.offsetWidth;
+                    var root = graph.insertVertex(parent, 'treeRoot', 'Root', w/2 - 30, 20, 60, 40);
+
+                    var v1 = graph.insertVertex(parent, 'v1', 'Child 1', 0, 0, 60, 40);
+                    graph.insertEdge(parent, null, '', root, v1);
+
+                    var v2 = graph.insertVertex(parent, 'v2', 'Child 2', 0, 0, 60, 40);
+                    graph.insertEdge(parent, null, '', root, v2);
+
+                    var v3 = graph.insertVertex(parent, 'v3', 'Child 3', 0, 0, 60, 40);
+                    graph.insertEdge(parent, null, '', root, v3);
+
+                    var v11 = graph.insertVertex(parent, 'v11', 'Child 1.1', 0, 0, 60, 40);
+                    graph.insertEdge(parent, null, '', v1, v11);
+
+                    var v12 = graph.insertVertex(parent, 'v12', 'Child 1.2', 0, 0, 60, 40);
+                    graph.insertEdge(parent, null, '', v1, v12);
+
+                    var v21 = graph.insertVertex(parent, 'v21', 'Child 2.1', 0, 0, 60, 40);
+                    graph.insertEdge(parent, null, '', v2, v21);
+
+                    var v22 = graph.insertVertex(parent, 'v22', 'Child 2.2', 0, 0, 60, 40);
+                    graph.insertEdge(parent, null, '', v2, v22);
+
+                    var v221 = graph.insertVertex(parent, 'v221', 'Child 2.2.1', 0, 0, 60, 40);
+                    graph.insertEdge(parent, null, '', v22, v221);
+
+                    var v222 = graph.insertVertex(parent, 'v222', 'Child 2.2.2', 0, 0, 60, 40);
+                    graph.insertEdge(parent, null, '', v22, v222);
+
+                    var v31 = graph.insertVertex(parent, 'v31', 'Child 3.1', 0, 0, 60, 40);
+                    graph.insertEdge(parent, null, '', v3, v31);
+                }
+                finally
+                {
+                    // 结束更新事务
+                    graph.getModel().endUpdate();
+                }
+            }
+        };
+
+        // 元素展开折叠遍历子元素
+        function toggleSubtree(graph, cell, show)
+        {
+            show = (show != null) ? show : true;
+            var cells = [];
+
+            graph.traverse(cell, true, function(vertex)
+            {
+                if (vertex != cell)
+                {
+                    cells.push(vertex);
+                }
+
+                // 停止递归，如果元素被删除
+                return vertex == cell || !graph.isCellCollapsed(vertex);
+            });
+
+            graph.toggleCells(show, cells, true);
+        };
+    </script>
+</head>
+
+<!-- 页面载入后启动程序. -->
+<body onload="main();">
+</body>
+</html>

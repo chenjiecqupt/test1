@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .red{
+        color: red;
+    }
+    .div{
+        width: 200px;
+        height: 100px;
+        border: 1px solid #0a9dc7;
+    }
+</style>
+<body>
+<div class="div" class="red">23432</div>
+</body>
+<script>
+    window.onload = function(){
+        (function(){
+            setTimeout(function(){
+                console.log(".................................................");
+            },0);
+            for(var i= 0; i < 10000; i++){
+                console.log(i);
+            }
+        })()
+    }
+</script>
+</html>

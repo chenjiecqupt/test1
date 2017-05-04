@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/test1.css">
+</head>
+<body>
+    <table border="1px solid #ccc" cellpadding="0" cellspacing="0">
+        <thead>
+            <th>姓名</th>
+            <th>年龄</th>
+            <th>性别</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>张三</td>
+                <td>21</td>
+                <td>男</td>
+            </tr>
+            <tr>
+                <td>李四</td>
+                <td>23</td>
+                <td>男</td>
+            </tr>
+            <tr>
+                <td>王五</td>
+                <td>25</td>
+                <td>男</td>
+            </tr>
+        </tbody>
+    </table>
+<div>
+    <table></table>
+</div>
+</body>
+<script src="js/jquery-1.12.4.min.js"></script>
+<script>
+    $(function(){
+        $('tr').click(function(){
+            $('div table').append($(this).clone(true));
+            var obj = $(this).html();
+            console.log($(this).html());
+        });
+    })
+</script>
+</html>

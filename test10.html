@@ -1,0 +1,98 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=GBK">
+    <title>Insert title here</title>
+    <style type="text/css">
+        v\:*{
+            behavior:url(#default#VML);
+        }
+
+        v\:RoundRect{
+            text-align:center;
+            position:relative;
+        }
+
+        v\:TextBox{
+            vertical-align:middle;
+            font-size:13px;
+        }
+    </style>
+</head>
+<body>
+<div class="grid" align="center">
+    <table class="gridbody" cellpadding="1" cellspacing="0" rules="all">
+        <tr class="gridtitle">
+            <td align="left" colspan="7">供货商所有关联销售信息查询</td>
+        </tr>
+        <tr class="griditem">
+            <td>
+                <center>
+                    <script>
+
+                        //第一层树结构
+                        var incv = new Array();
+                        incv[0] = "1";
+                        incv[1] = "IOS111052500018";
+                        incv[2] = "临沂新程金锣肉制品集团有限公司";
+
+                        //第二层树结构
+                        var dcv=new Array(); //定义一维数组
+
+                        dcv[0]=new Array(); //将每一个子元素又定义为数组
+                        dcv[0][0]='2';
+                        dcv[0][1]='5000100003';
+                        dcv[0][2]='华联超市经七超市金锣专柜';
+
+                        dcv[1]=new Array(); //将每一个子元素又定义为数组
+                        dcv[1][0]='3';
+                        dcv[1][1]='5000100002';
+                        dcv[1][2]='华联超市世购超市金锣专柜';
+
+                        dcv[2]=new Array(); //将每一个子元素又定义为数组
+                        dcv[2][0]='4';
+                        dcv[2][1]='5000100001';
+                        dcv[2][2]='华联超市嘉华超市金锣专柜';
+
+                        document.write(drawXX(incv,dcv));
+
+                        function drawXX(iobj,dobj){
+                            v1 = 20+40*(dobj.length-1);
+                            v2 = v1/2;
+                            v3 = v2 - 12;
+
+                            //alert("start -- ");
+                            var start = "<v:group coordsize='600,800' style='width:600px;height:800px;'>";
+                            var is="<v:RoundRect style='width:300px;height:28px;left:0px;top:"
+                                +     v3
+                                +    "px' align='center'>"
+                                +    "<v:shadow on='True' type='single' color='#b3b3b3' offset='5px,5px'/><v:TextBox >"
+                                +     iobj[1] + "(" + iobj[2] + ")"
+                                +    "</a></v:TextBox></v:RoundRect>";
+                            var ls="";
+                            ls +="<v:line from='300," + v2 + "' to='340," + v2 + "' />"
+                            ls +="<v:line from='340,20' to='340," + v1 + "' />"
+
+                            var ds ="";
+                            for(var i=0;i<dobj.length;i++){
+                                ds +="<v:line from='340," + (20+i*40) + "' to='380," + (20+i*40) + "' />"
+                                ds +="<v:RoundRect style='width:280px;height:28px;left:380px;top:" + (8+i*40) + "px;' align='center'>"
+                                ds +="<v:shadow on='True' type='single' color='#b3b3b3' offset='5px,5px'/>";
+                                ds +="<v:TextBox >" + dobj[i][1] +"("+ dobj[i][2] +")" + "</v:TextBox>";
+                                ds +="</v:RoundRect>";
+                            }
+
+                            var end = "</v:group>";
+
+                            var draws = start + is + ls + ds + end;
+
+                            return draws;
+                        }
+                    </script>
+
+                </center>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

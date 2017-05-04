@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/album.css">
+    <style>
+    	.searchPerson{
+    		padding: 5px 10px;
+    		border: none;
+    		border-radius: 3px;
+    		color: #fff;
+    		background: #0195ff;
+    	}
+    </style>	
+</head>
+<body>
+<button class="btn">点击</button>
+<button class="searchPerson">qweqww</button>
+</body>
+<script src="js/jquery-1.12.4.min.js"></script>
+<script src="js/albumUi.js"></script>
+<script src="js/albumData.js"></script>
+<script>
+    $(function(){
+        $('.btn').click(function(){
+            $.albumUi(data);
+        });
+    })
+    //放大操作
+    $(document).on('click','class1',function(){
+        $('#showmodal').css({
+            'top': '0px',
+            'left': '0%',
+            'width': '100%'
+        });
+        var modal_body_height = $(window).height() -160;
+        $('.modal-body').css({
+            'max-height': modal_body_height+'px',
+            'height': modal_body_height+'px'
+        });
+    });
+    //缩小操作
+    $(document).on('click','class2',function(){
+        $('#showmodal').css({
+            'top': '20px',
+            'left': '10%',
+            'width': '80%'
+        });
+        $('.modal-body').css({
+            'max-height': '648px',
+            'height': 'inherit'
+        });
+    });
+    $(document).on('mousedown','.searchPerson',function(){
+    	$(this).css('background','#0084e2');
+    });
+    $(document).on('mouseup','.searchPerson',function(){
+    	$(this).css('background','#0195ff');
+    })
+    //缩放操作结束
+
+</script>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <style>
+        .div{
+            width: 600px;
+            height: 400px;
+            border: 1px solid #d0e9c6;
+            padding: 30px;
+        }
+        .sp::selection{
+            background: none;
+        }
+    </style>
+</head>
+<body>
+<button><a href="http://www.baidu.com">按钮链接百度</a></button>
+<button class="btn1">变化</button>
+    <button class="btn2">复原</button>
+    <div class="div">
+        <span class="sp">web开发</span>
+        <span>qweqweiqwe</span>
+    </div>
+</body>
+<script src="js/jquery-1.12.4.min.js"></script>
+<script>
+    $(function(){
+        $('.btn1').click(function(){
+            $('.div').stop().animate();
+            $('.sp').stop().animate();
+            $('.div').animate({
+                'margin-left': '200px',
+                'border-width': '10px'
+            },3000);
+            $('.sp').animate({
+                'color': '#b3b3b3',
+                'font-size': '50px'
+            },3000)
+        });
+        $('.btn2').click(function(){
+            $('.div').stop().animate();
+            $('.sp').stop().animate();
+            $('.div').animate({
+                'margin-left': '0px',
+                'border-width': '1px'
+            },3000);
+            $('.sp').animate({
+                'color': '#000',
+                'font-size': '14px'
+            },3000)
+        });
+    })
+</script>
+</html>

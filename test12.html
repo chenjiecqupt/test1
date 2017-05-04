@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .box{
+        width: 100px;
+        height: 100px;
+        display: inline-block;
+        margin-left: 200px;
+        background: #0a9dc7;
+    }
+</style>
+<body>
+    <div class="box box1">1</div>
+    <div id="div2" class="box">2</div>
+    <div class="box box1">3</div>
+    <div class="box we">
+        <p>wewqeqe</p>
+    </div>
+    <div class="box">5</div>
+</body>
+<script>
+    window.onload=function(){
+        function $(str){
+            if(str.charAt(0) == '#'){
+                return document.querySelectorAll(str)[0];
+            }else{
+                return document.querySelectorAll(str);
+            }
+        }
+        $('#div2').innerHTML = 'div2';
+        console.log($('#div2').innerHTML);
+        console.log($('.we')[0].innerHTML)
+        console.log($('#div2').getAttribute('class'));
+        console.log($('div')[3].getAttribute('class'));
+        console.log($('.box1')[1].getAttribute('class'))
+    }
+</script>
+</html>

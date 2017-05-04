@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .ul2{
+        display: none;
+    }
+    .ul3{
+        display: none;
+    }
+    .div1:hover .ul2{
+        display: block;
+    }
+    .div2:hover .ul3{
+        display: block;
+    }
+</style>
+<body>
+<ul>
+    <li>
+        <div class="div1">
+            <span>qweqwe</span>
+            <ul class="ul2">
+                <li>
+                    <div class="div2">
+                        <span>234234</span>
+                        <ul class="ul3">
+                            <li>
+                                <span>ul3下的span</span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </li>
+</ul>
+</body>
+</html>
